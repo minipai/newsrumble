@@ -1,0 +1,15 @@
+.post-before cite {
+  background-color: #cde7d6;
+}
+
+.post-after cite {
+  background-color: #cdddec;
+}
+
+.news-list .news {
+  padding: 20px 0;
+  border-bottom: 1px solid #ccc;
+}
+.news-list .news h2 {
+  margin-bottom: 10px;
+}

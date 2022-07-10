@@ -1,0 +1,43 @@
+.article h1 {
+  font-size: 24px;
+}
+.article h2 {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 3px;
+}
+.article h2 a {
+  color: #333;
+}
+.article p {
+  line-height: 1.5;
+  margin: 10px 0;
+}
+.article cite {
+  color: var(--text-light);
+  margin: 5px 0;
+}
+.article li {
+  list-style: square outside;
+  margin-left: 20px;
+}
+.article .content {
+  margin: 10px 0;
+}
+
+.meta {
+  color: #4d4d4d;
+  font-style: normal;
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.excerpt,
+.snippet {
+  margin: 5px 0;
+  color: #333;
+}
+
+.text-center {
+  text-align: center;
+}

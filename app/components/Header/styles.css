@@ -1,0 +1,29 @@
+#header {
+  background: #e5e5e5;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+#header .container {
+  box-shadow: 0 0 2px rgba(#000, 0.1);
+  padding: 20px 40px;
+  position: relative;
+  background-color: #efefef;
+}
+
+#header h1 {
+  position: relative;
+  padding-bottom: 5px;
+}
+#header a {
+  border: none;
+}
+
+#menu {
+  float: right;
+  margin-top: 12px;
+}
+#menu li {
+  float: left;
+  display: block;
+  margin-left: 10px;
+}
