@@ -12,25 +12,11 @@ export default function ArticlePage({ header, children }: Props) {
       <div className="content grid-70">{children}</div>
       <div className="sider grid-30">
         <h2>最新消息</h2>
-        <p>
-          你可以從以下幾種來源獲得我們的最新消息。訊息同步，不過Twitter會比其他多一些廢話跟閒聊。
-        </p>
-        <ul>
-          <li>
-            <a href="http://blog.newsrumble.tw">Blog</a>
-          </li>
-          <li>
-            <a href="http://twitter.com/newsrumble">Twitter</a>
-          </li>
-          <li>
-            <a href="http://www.facebook.com/pages/News-Rumble/147660275258168">
-              Facebook
-            </a>
-          </li>
-        </ul>
+        <p>本站已經進入封存狀態，不再更新內容。</p>
         <br />
-        <h2>徵求新聞</h2>
-        <p>目前News Rumble專注在收集兩種新聞：</p>
+
+        <h2>新聞分類</h2>
+        <p>News Rumble專注在收集兩種新聞：</p>
         <ul>
           <li>
             <strong>正直新聞</strong>：報導馬上後政府施政表現良好的新聞

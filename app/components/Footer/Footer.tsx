@@ -13,22 +13,10 @@ export default function Footer() {
             <li>
               <Link to="/about">About</Link>
             </li>
-            <li>
-              <Link to="/contact">Contact</Link>
-            </li>
-            <li>
-              <a href="http://twitter.com/newsrumble">Twitter</a>
-            </li>
-            <li>
-              <a href="http://www.facebook.com/pages/newsrumble">Facebook</a>
-            </li>
-            <li>
-              <a href="http://blog.newsrumble.tw">Blog</a>（
-              <a href="http://feeds.feedburner.com/newsrumble">RSS</a>）
-            </li>
           </ul>
           <p className="copy">
-            Copyleft 2011 News Rumble!, All Wrongs Reserved.
+            Copyleft {new Date().getFullYear()} News Rumble!, All Wrongs
+            Reserved.
           </p>
         </div>
       </div>

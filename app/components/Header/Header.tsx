@@ -27,9 +27,9 @@ export default function Header() {
             <li className="about">
               <Link to="/about">關於本站</Link>
             </li>
-            <li className="contact">
+            {/* <li className="contact">
               <Link to="/contact">分享新聞</Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>
