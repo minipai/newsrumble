@@ -12,6 +12,7 @@ type GoodNews = {
   formatedContent: string;
   source: string;
   post_title: string;
+  media: string;
   date: string;
   reporter: string;
   photographer: string;
@@ -26,6 +27,7 @@ async function getLoaderData({ id }: { id: string }) {
         good_news.source,
         posts.title as post_title,
         posts.content,
+        posts.media,
         posts.date,
         posts.reporter,
         posts.photographer,
@@ -57,6 +59,7 @@ export default function Show() {
           <cite>
             {[
               formatDate(goodNews.date),
+              goodNews.media,
               goodNews.reporter,
               goodNews.photographer,
               goodNews.meta,

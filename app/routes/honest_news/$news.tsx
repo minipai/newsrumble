@@ -84,6 +84,7 @@ export default function Show() {
           <cite>
             {[
               formatDate(honestNews.before_post_date),
+              honestNews.before_post_media,
               honestNews.before_post_reporter,
               honestNews.before_post_photographer,
               honestNews.before_post_meta,
@@ -105,6 +106,7 @@ export default function Show() {
           <cite>
             {[
               formatDate(honestNews.after_post_date),
+              honestNews.after_post_media,
               honestNews.after_post_reporter,
               honestNews.after_post_photographer,
               honestNews.after_post_meta,
