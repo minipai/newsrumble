@@ -6,7 +6,7 @@ export default function About() {
       header={
         <>
           <h1>關於本站</h1>
-          <p className="meta">台灣變好 新聞報導！</p>
+          <p className="meta">我們的理念 正直與優質</p>
         </>
       }
     >

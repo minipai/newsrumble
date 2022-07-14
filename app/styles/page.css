@@ -45,3 +45,18 @@
 .pre {
   white-space: pre-wrap;
 }
+
+.thanks {
+  overflow: auto;
+}
+.thanks li {
+  display: block;
+  background-color: #eee;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin: 0;
+}
+
+.thanks .count {
+  float: right;
+}

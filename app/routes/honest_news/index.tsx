@@ -123,7 +123,7 @@ export default function Index() {
       <div className="grid-100">
         <header className="page-header">
           <h1>正直新聞</h1>
-          <p className="meta">台灣變好新聞報導！</p>
+          <p className="meta">台灣變好 新聞報導！</p>
         </header>
       </div>
 

@@ -18,18 +18,18 @@ export default function Header() {
         </div>
         <nav className="grid-60">
           <ul id="menu">
-            <li className="honest-news">
+            <li>
               <Link to="/honest_news">正直新聞</Link>
             </li>
-            <li className="good-news">
+            <li>
               <Link to="/good_news">優質新聞</Link>
             </li>
-            <li className="about">
+            <li>
+              <Link to="/thanks">感謝推薦</Link>
+            </li>
+            <li>
               <Link to="/about">關於本站</Link>
             </li>
-            {/* <li className="contact">
-              <Link to="/contact">分享新聞</Link>
-            </li> */}
           </ul>
         </nav>
       </div>
