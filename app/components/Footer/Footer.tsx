@@ -1,5 +1,3 @@
-import { Link } from "@remix-run/react";
-
 import styles from "./styles.css";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
@@ -11,7 +9,13 @@ export default function Footer() {
         <div className="grid-100">
           <ul className="foot-links">
             <li>
-              <Link to="/about">About</Link>
+              <a
+                href="https://github.com/minipai/newsrumble"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Github
+              </a>
             </li>
           </ul>
           <p className="copy">
