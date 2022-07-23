@@ -16,6 +16,7 @@ type HonestNews = {
   before_post_photographer: string;
   before_post_meta: string;
   before_post_content: string;
+  before_highlight: string;
   formatedBeforePostContent: string;
   after_post_date: string;
   after_post_title: string;
@@ -24,6 +25,7 @@ type HonestNews = {
   after_post_photographer: string;
   after_post_meta: string;
   after_post_content: string;
+  after_highlight: string;
   formatedAfterPostContent: string;
 };
 
@@ -46,17 +48,39 @@ async function getLoaderData({ id }: { id: string }) {
         after_posts.reporter as after_post_reporter,
         after_posts.photographer as after_post_photographer,
         after_posts.meta as after_post_meta,
-        after_posts.content as after_post_content	
+        after_posts.content as after_post_content,
+        honest_highlights.before as before_highlight,
+        honest_highlights.after as after_highlight
       FROM honest_news
         INNER JOIN posts before_posts on honest_news.before_id = before_posts.id
         INNER JOIN posts after_posts on honest_news.after_id = after_posts.id
+        INNER JOIN honest_highlights on honest_news.id = honest_highlights.news_id
       WHERE honest_news.id = ${id}
     `;
+
   honestNews.formatedBeforePostContent = micromark(
     honestNews.before_post_content
+  ).replaceAll(
+    new RegExp(
+      `(${honestNews.before_highlight
+        .split(/\r?\n/)
+        .map((highlight) => `(${highlight})`)
+        .join("|")})`,
+      "gm"
+    ),
+    (text) => (text ? `<strong>${text}</strong>` : text)
   );
   honestNews.formatedAfterPostContent = micromark(
     honestNews.after_post_content
+  ).replaceAll(
+    new RegExp(
+      `(${honestNews.after_highlight
+        .split(/\r?\n/)
+        .map((highlight) => (highlight ? `(${highlight})` : ""))
+        .join("|")})`,
+      "gm"
+    ),
+    (text) => (text ? `<strong>${text}</strong>` : text)
   );
   return honestNews;
 }
