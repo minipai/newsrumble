@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { sql } from "~/db.server";
+import { mediaPrefix } from "~/modules/text";
 
 type MediaCount = {
   media: string;
@@ -34,7 +35,7 @@ export default function Index() {
     <section className="news-list">
       <div className="grid-100">
         <header className="page-header">
-          <h1>優質新聞 {media}</h1>
+          <h1>{mediaPrefix(media)}優質新聞</h1>
           <p className="meta">讓人幸福的好新聞～</p>
         </header>
       </div>

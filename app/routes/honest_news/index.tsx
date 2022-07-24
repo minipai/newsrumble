@@ -4,6 +4,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
+import { mediaPrefix } from "~/modules/text";
 
 type MediaCount = {
   media: string;
@@ -86,12 +87,13 @@ async function getLoaderData({ page, media }: { page: number; media: string }) {
       ON posts.id = honest_news.before_id
   `;
 
-  return { honestNews, count, mediaCounts, page };
+  return { honestNews, count, media, mediaCounts, page };
 }
 
 type LoaderData = {
   honestNews: HonestNews[];
   count: number;
+  media: string;
   mediaCounts: MediaCount[];
   page: number;
 };
@@ -105,6 +107,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const {
+    media,
     mediaCounts,
     honestNews,
     count,
@@ -122,7 +125,7 @@ export default function Index() {
     <section className="news-list">
       <div className="grid-100">
         <header className="page-header">
-          <h1>正直新聞</h1>
+          <h1>{mediaPrefix(media)}正直新聞</h1>
           <p className="meta">台灣變好 新聞報導！</p>
         </header>
       </div>
