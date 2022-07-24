@@ -4,7 +4,7 @@
   --text-dark: #333;
   --text-strong: #c00;
   --link: #333;
-  --link-hover: #c00;
+  --link-light: #999;
 }
 
 body {
@@ -17,7 +17,7 @@ a {
   color: var(--link);
   text-decoration: none;
   padding-bottom: 1px;
-  border-bottom: 1px dotted lighten(var(--link), 30%);
+  border-bottom: 1px dashed var(--link-light);
 }
 a:hover {
   border-bottom: 1px solid var(--link);
@@ -25,10 +25,6 @@ a:hover {
 b,
 strong {
   font-weight: bold;
-}
-small {
-  font-size: 0.8em;
-  opacity: 0.8;
 }
 
 h1,
@@ -47,23 +43,14 @@ p {
 strong {
   color: var(--text-strong);
 }
-table {
-  width: 100%;
-}
-tr {
-  border-bottom: 1px solid #ccc;
-}
-th,
-td {
-  padding: 10px 0;
-  vertical-align: top;
-}
+
 blockquote {
   color: var(--text-light);
   padding: 10px 20px;
   border: 1px dotted #999;
   margin: 10px 0;
 }
+
 hr {
   border-color: #ddd;
   border-style: solid none;

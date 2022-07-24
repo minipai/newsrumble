@@ -26,7 +26,6 @@ export default function ArticlePage({ header, children }: Props) {
           </li>
         </ul>
       </div>
-      <div className="clear"></div>
     </article>
   );
 }

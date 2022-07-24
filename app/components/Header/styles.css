@@ -6,14 +6,9 @@
 #header .container {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   padding: 20px 40px;
-  position: relative;
   background-color: #efefef;
 }
 
-#header h1 {
-  position: relative;
-  padding-bottom: 5px;
-}
 #header a {
   border: none;
 }

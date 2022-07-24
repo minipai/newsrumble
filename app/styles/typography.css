@@ -24,20 +24,3 @@
 .article .content {
   margin: 10px 0;
 }
-
-.meta {
-  color: #4d4d4d;
-  font-style: normal;
-  font-size: 13px;
-  padding: 2px 0;
-}
-
-.excerpt,
-.snippet {
-  margin: 5px 0;
-  color: #333;
-}
-
-.text-center {
-  text-align: center;
-}

@@ -7,13 +7,14 @@
   padding: 20px 40px;
   position: relative;
   background-color: #efefef;
-}
-
-#footer .foot-links {
-  float: right;
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  grid-template-columns: 20fr 1fr;
+  align-items: center;
 }
 
 #footer li {
   display: inline;
-  margin-left: 10px;
 }
