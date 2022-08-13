@@ -94,16 +94,14 @@ export default function Show() {
 
   return (
     <article className="honest-news">
-      <div className="grid-100">
-        <header className="page-header">
-          <h1>{honestNews.title}</h1>
-          <p className="meta">
-            {honestNews.source ? `${honestNews.source}推薦` : ""}
-          </p>
-        </header>
-      </div>
-      <div className="post-before grid-50">
-        <article className="article">
+      <header className="page-header">
+        <h1>{honestNews.title}</h1>
+        <p className="meta">
+          {honestNews.source ? `${honestNews.source}推薦` : ""}
+        </p>
+      </header>
+      <div className="grid-5-5">
+        <article className="post-before article">
           <h2>{honestNews.before_post_title}</h2>
           <cite>
             {[
@@ -123,9 +121,8 @@ export default function Show() {
             }}
           ></div>
         </article>
-      </div>
-      <div className="post-after grid-50">
-        <article className="article">
+
+        <article className="post-after article">
           <h2>{honestNews.after_post_title}</h2>
           <cite>
             {[

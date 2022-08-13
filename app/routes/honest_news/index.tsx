@@ -123,63 +123,61 @@ export default function Index() {
 
   return (
     <section className="news-list">
-      <div className="grid-100">
-        <header className="page-header">
-          <h1>{mediaPrefix(media)}正直新聞</h1>
-          <p className="meta">台灣變好 新聞報導！</p>
-        </header>
-      </div>
-
-      <div className="content grid-75">
-        {honestNews.map((news) => (
-          <div key={news.id} className="news">
-            <h2>
-              <Link to={`/honest_news/${news.id}`}>{news.title}</Link>
-            </h2>
-            <p className="excerpt">
-              {formatDate(news.before_post_date)} ／ {news.before_post_media} ／{" "}
-              {news.before_post_title}
-            </p>
-            <p className="excerpt">
-              {formatDate(news.after_post_date)} ／ {news.after_post_media} ／{" "}
-              {news.after_post_title}
-            </p>
-            <p className="meta">{news.source ? `${news.source}推薦` : ""}</p>
-          </div>
-        ))}
-
-        <nav className="pagination">
-          {Array(Math.ceil(count / 10))
-            .fill(0)
-            .map((_, i) => i + 1)
-            .map((p) => (
-              <Link
-                key={p}
-                to={`/honest_news?${searchQuery(p).toString()}`}
-                className={currentPage === p ? "current" : ""}
-              >
-                {p}
-              </Link>
-            ))}
-        </nav>
-      </div>
-      <div className="sider grid-25">
-        <p>
-          馬總統英九先生上任後，台灣真的變好了。看看各大媒體報導，與阿扁貪腐執政時期這麼強烈的對比，我們相信投給馬英九先生是正確的選擇。
-        </p>
-
-        <h2>媒體</h2>
-        <ul>
-          {mediaCounts.map((mediaCount) => (
-            <li key={mediaCount.media}>
-              <Link to={`/honest_news?media=${mediaCount.media}`}>
-                {mediaCount.media}（{mediaCount.count}）
-              </Link>
-            </li>
+      <header className="page-header">
+        <h1>{mediaPrefix(media)}正直新聞</h1>
+        <p className="meta">台灣變好 新聞報導！</p>
+      </header>
+      <div className="grid-7-3">
+        <div className="content">
+          {honestNews.map((news) => (
+            <div key={news.id} className="news">
+              <h2>
+                <Link to={`/honest_news/${news.id}`}>{news.title}</Link>
+              </h2>
+              <p className="excerpt">
+                {formatDate(news.before_post_date)} ／ {news.before_post_media}{" "}
+                ／ {news.before_post_title}
+              </p>
+              <p className="excerpt">
+                {formatDate(news.after_post_date)} ／ {news.after_post_media} ／{" "}
+                {news.after_post_title}
+              </p>
+              <p className="meta">{news.source ? `${news.source}推薦` : ""}</p>
+            </div>
           ))}
-        </ul>
+
+          <nav className="pagination">
+            {Array(Math.ceil(count / 10))
+              .fill(0)
+              .map((_, i) => i + 1)
+              .map((p) => (
+                <Link
+                  key={p}
+                  to={`/honest_news?${searchQuery(p).toString()}`}
+                  className={currentPage === p ? "current" : ""}
+                >
+                  {p}
+                </Link>
+              ))}
+          </nav>
+        </div>
+        <div className="sider">
+          <p>
+            馬總統英九先生上任後，台灣真的變好了。看看各大媒體報導，與阿扁貪腐執政時期這麼強烈的對比，我們相信投給馬英九先生是正確的選擇。
+          </p>
+
+          <h2>媒體</h2>
+          <ul>
+            {mediaCounts.map((mediaCount) => (
+              <li key={mediaCount.media}>
+                <Link to={`/honest_news?media=${mediaCount.media}`}>
+                  {mediaCount.media}（{mediaCount.count}）
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div className="clear"></div>
     </section>
   );
 }

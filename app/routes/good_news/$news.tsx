@@ -48,7 +48,7 @@ export default function Show() {
   const goodNews = useLoaderData<GoodNews>();
 
   return (
-    <article className="article honest-news grid-100">
+    <article className="article honest-news">
       <header className="page-header">
         <h1>{goodNews.title}</h1>
         <p className="meta"></p>

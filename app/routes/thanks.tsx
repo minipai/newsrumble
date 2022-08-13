@@ -54,7 +54,7 @@ export default function Contact() {
         <h2>正直新聞</h2>
         <ul className="thanks">
           {honestNews.map((sourceCount, i) => (
-            <li key={sourceCount.source} className="grid-25">
+            <li key={sourceCount.source}>
               <div className="box">
                 <span className="name">{sourceCount.source}</span>：
                 <span className="count ">{sourceCount.count}篇</span>
@@ -66,7 +66,7 @@ export default function Contact() {
         <h2>優質新聞</h2>
         <ul className="thanks">
           {goodNews.map((sourceCount, i) => (
-            <li key={sourceCount.source} className="grid-25">
+            <li key={sourceCount.source}>
               <div className="box">
                 <span className="name">{sourceCount.source}</span>：
                 <span className="count ">{sourceCount.count}篇</span>

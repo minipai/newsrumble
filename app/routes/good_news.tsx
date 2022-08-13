@@ -33,34 +33,32 @@ export default function Index() {
 
   return (
     <section className="news-list">
-      <div className="grid-100">
-        <header className="page-header">
-          <h1>{mediaPrefix(media)}優質新聞</h1>
-          <p className="meta">讓人幸福的好新聞～</p>
-        </header>
-      </div>
+      <header className="page-header">
+        <h1>{mediaPrefix(media)}優質新聞</h1>
+        <p className="meta">讓人幸福的好新聞～</p>
+      </header>
+      <div className="grid-7-3">
+        <div className="content">
+          <Outlet />
+        </div>
+        <div className="sider">
+          <p>
+            中華民國第12任總統馬英九於97年5月20日就職，參選期間以「振興臺灣經濟、找回核心價值」為訴求，獲得廣大選民迴響，終以765萬張選票（得票率58.5％）贏得總統選舉，促成臺灣二次政黨輪替。
+          </p>
+          <p>～中華民國總統府</p>
 
-      <div className="content grid-75">
-        <Outlet />
+          <h2>媒體</h2>
+          <ul>
+            {mediaCounts.map((mediaCount) => (
+              <li key={mediaCount.media}>
+                <Link to={`/good_news?media=${mediaCount.media}`}>
+                  {mediaCount.media}（{mediaCount.count}）
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div className="sider grid-25">
-        <p>
-          中華民國第12任總統馬英九於97年5月20日就職，參選期間以「振興臺灣經濟、找回核心價值」為訴求，獲得廣大選民迴響，終以765萬張選票（得票率58.5％）贏得總統選舉，促成臺灣二次政黨輪替。
-        </p>
-        <p>～中華民國總統府</p>
-
-        <h2>媒體</h2>
-        <ul>
-          {mediaCounts.map((mediaCount) => (
-            <li key={mediaCount.media}>
-              <Link to={`/good_news?media=${mediaCount.media}`}>
-                {mediaCount.media}（{mediaCount.count}）
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="clear"></div>
     </section>
   );
 }

@@ -9,11 +9,9 @@ type Props = {
 export default function Main({ children }: Props) {
   return (
     <div id="main">
-      <div className="container grid-container">
+      <div className="container">
         {children}
-        <div className="grid-100">
-          <hr />
-        </div>
+        <hr />
       </div>
     </div>
   );
