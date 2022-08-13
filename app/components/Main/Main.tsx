@@ -9,10 +9,8 @@ type Props = {
 export default function Main({ children }: Props) {
   return (
     <div id="main">
-      <div className="container">
-        {children}
-        <hr />
-      </div>
+      {children}
+      <hr />
     </div>
   );
 }
