@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
@@ -101,7 +101,7 @@ export default function Show() {
         </p>
       </header>
       <div className="grid-5-5">
-        <article className="post-before article">
+        <article className="news-before article">
           <h2>{honestNews.before_post_title}</h2>
           <cite>
             {[
@@ -122,7 +122,7 @@ export default function Show() {
           ></div>
         </article>
 
-        <article className="post-after article">
+        <article className="news-after article">
           <h2>{honestNews.after_post_title}</h2>
           <cite>
             {[

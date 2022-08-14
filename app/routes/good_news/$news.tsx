@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
@@ -48,32 +48,30 @@ export default function Show() {
   const goodNews = useLoaderData<GoodNews>();
 
   return (
-    <article className="article honest-news">
+    <article className="article good-news">
       <header className="page-header">
         <h1>{goodNews.title}</h1>
         <p className="new-meta"></p>
       </header>
-      <div className="post">
-        <article>
-          <h2>{goodNews.post_title}</h2>
-          <cite>
-            {[
-              formatDate(goodNews.date),
-              goodNews.media,
-              goodNews.reporter,
-              goodNews.photographer,
-              goodNews.meta,
-            ]
-              .filter((i) => i)
-              .join("／")}
-          </cite>
+      <article>
+        <h2>{goodNews.post_title}</h2>
+        <cite>
+          {[
+            formatDate(goodNews.date),
+            goodNews.media,
+            goodNews.reporter,
+            goodNews.photographer,
+            goodNews.meta,
+          ]
+            .filter((i) => i)
+            .join("／")}
+        </cite>
 
-          <div
-            className="content"
-            dangerouslySetInnerHTML={{ __html: goodNews.formatedContent }}
-          ></div>
-        </article>
-      </div>
+        <div
+          className="content"
+          dangerouslySetInnerHTML={{ __html: goodNews.formatedContent }}
+        ></div>
+      </article>
     </article>
   );
 }
