@@ -5,11 +5,11 @@ type Props = {
 
 export default function ArticlePage({ header, children }: Props) {
   return (
-    <article className="pages">
+    <article>
       <header className="page-header">{header}</header>
       <div className="grid-7-3">
-        <div className="content">{children}</div>
-        <div className="sider">
+        <div>{children}</div>
+        <div className="page-sider">
           <h2>最新消息</h2>
           <p>本站已經進入封存狀態，不再更新內容。</p>
           <br />

@@ -51,7 +51,7 @@ export default function Show() {
     <article className="article honest-news">
       <header className="page-header">
         <h1>{goodNews.title}</h1>
-        <p className="meta"></p>
+        <p className="new-meta"></p>
       </header>
       <div className="post">
         <article>

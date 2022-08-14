@@ -1,0 +1,20 @@
+.pagination {
+  margin: 20px 0;
+}
+.pagination a,
+.pagination .gap,
+.pagination .current {
+  display: inline-block;
+  padding: 3px 10px;
+  margin: 0 10px 0 0;
+  background-color: #e1e1e1;
+  color: var(--text-light);
+  line-height: 1.5;
+  border: 1px solid #e1e1e1;
+}
+
+.pagination a:hover,
+.pagination .current {
+  background-color: #fff;
+  border: 1px solid #d2d2d2;
+}

@@ -1,14 +1,16 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { Link, Outlet, useLocation } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import ArticlePage from "~/components/ArticlePage";
 import { sql } from "~/db.server";
+import styles from "~/styles/thanks.css";
 
 type SourceCount = {
   source: string;
   count: number;
 };
+
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 async function getLoaderData() {
   const sourceCount = async (news: string) =>
@@ -42,7 +44,7 @@ export default function Contact() {
       header={
         <>
           <h1>感謝推薦</h1>
-          <p className="meta">網友們的熱心 特別感謝</p>
+          <p>網友們的熱心 特別感謝</p>
         </>
       }
     >

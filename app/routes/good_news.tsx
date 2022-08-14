@@ -32,16 +32,16 @@ export default function Index() {
   const media = new URLSearchParams(location.search).get("media") ?? "";
 
   return (
-    <section className="news-list">
+    <div>
       <header className="page-header">
         <h1>{mediaPrefix(media)}優質新聞</h1>
-        <p className="meta">讓人幸福的好新聞～</p>
+        <p>讓人幸福的好新聞～</p>
       </header>
       <div className="grid-7-3">
-        <div className="content">
+        <section className="news-list">
           <Outlet />
-        </div>
-        <div className="sider">
+        </section>
+        <div className="page-sider">
           <p>
             中華民國第12任總統馬英九於97年5月20日就職，參選期間以「振興臺灣經濟、找回核心價值」為訴求，獲得廣大選民迴響，終以765萬張選票（得票率58.5％）贏得總統選舉，促成臺灣二次政黨輪替。
           </p>
@@ -59,6 +59,6 @@ export default function Index() {
           </ul>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

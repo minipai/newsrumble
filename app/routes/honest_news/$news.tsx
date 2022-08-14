@@ -96,7 +96,7 @@ export default function Show() {
     <article className="honest-news">
       <header className="page-header">
         <h1>{honestNews.title}</h1>
-        <p className="meta">
+        <p className="news-meta">
           {honestNews.source ? `${honestNews.source}推薦` : ""}
         </p>
       </header>

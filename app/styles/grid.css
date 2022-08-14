@@ -1,0 +1,20 @@
+.grid-7-3,
+.grid-5-5 {
+  display: grid;
+  gap: 20px;
+}
+
+.grid-7-3 {
+  grid-template-columns: 7fr 3fr;
+}
+
+.grid-5-5 {
+  grid-template-columns: 5fr 5fr;
+}
+
+@media (max-width: 750px) {
+  .grid-7-3,
+  .grid-5-5 {
+    grid-template-columns: 1fr;
+  }
+}

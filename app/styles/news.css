@@ -1,27 +1,30 @@
-.post-before cite {
-  background-color: #cde7d6;
-}
-
-.post-after cite {
-  background-color: #cdddec;
-}
-
 .news-list .news {
   padding: 20px 0;
   border-bottom: 1px solid #ccc;
+}
+.news-list .news:first-child {
+  padding-top: 0;
 }
 .news-list .news h2 {
   margin-bottom: 10px;
 }
 
-.meta {
+.news-meta {
   color: #4d4d4d;
   font-style: normal;
   font-size: 13px;
   padding: 2px 0;
 }
 
-.excerpt {
+.news-excerpt {
   margin: 5px 0;
   color: #333;
+}
+
+.post-before cite {
+  background-color: #cde7d6;
+}
+
+.post-after cite {
+  background-color: #cdddec;
 }

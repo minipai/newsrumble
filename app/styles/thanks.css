@@ -1,0 +1,25 @@
+.thanks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+@media (max-width: 960px) {
+  .thanks {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 750px) {
+  .thanks {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.thanks li {
+  display: block;
+  background-color: #eee;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin: 0;
+}
+
+.thanks .count {
+  float: right;
+}

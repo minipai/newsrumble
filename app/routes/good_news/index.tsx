@@ -70,10 +70,10 @@ export default function Index() {
           <h2>
             <Link to={`/good_news/${news.id}`}>{news.title}</Link>
           </h2>
-          <p className="excerpt">
+          <p className="news-excerpt">
             {truncate(news.content ?? "", { length: 100 })}
           </p>
-          <p className="meta">{news.source && `${news.source}推薦`}</p>
+          <p className="news-meta">{news.source && `${news.source}推薦`}</p>
         </div>
       ))}
 

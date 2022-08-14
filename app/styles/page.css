@@ -1,73 +1,24 @@
 .page-header {
   margin: 20px 0;
   border-bottom: 1px dashed #ccc;
+}
+.page-header h1 {
   font-size: 24px;
 }
-.meta {
-  color: var(--text-light);
-  margin: 5px 0;
+.page-header p {
+  color: #666;
+  padding: 0;
 }
-.sider {
+
+.page-sider {
   line-height: 1.5;
 }
-.sider h2 {
+.page-sider h2 {
   margin: 10px 0;
   font-size: 15px;
 }
-.sider li {
+.page-sider li {
   list-style: square outside;
   margin-left: 20px;
   line-height: 1.8;
-}
-
-.pagination {
-  margin: 20px 0;
-}
-
-.pagination a,
-.pagination .gap,
-.pagination .current {
-  display: inline-block;
-  padding: 3px 10px;
-  margin: 0 10px 0 0;
-  background-color: #e1e1e1;
-  color: var(--text-light);
-  line-height: 1.5;
-  border: 1px solid #e1e1e1;
-}
-
-.pagination a:hover,
-.pagination .current {
-  background-color: #fff;
-  border: 1px solid #d2d2d2;
-}
-
-.pre {
-  white-space: pre-wrap;
-}
-
-.thanks {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-@media (max-width: 960px) {
-  .thanks {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-@media (max-width: 750px) {
-  .thanks {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-.thanks li {
-  display: block;
-  background-color: #eee;
-  padding: 10px;
-  border: 1px solid #fff;
-  margin: 0;
-}
-
-.thanks .count {
-  float: right;
 }
