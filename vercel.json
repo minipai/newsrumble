@@ -1,5 +1,16 @@
 {
   "github": {
     "silent": true
-  }
+  },
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "maxage=0, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ]
 }
