@@ -54,7 +54,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return json(await getLoaderData({ page: parseInt(page), media }));
+  return json(await getLoaderData({ page: parseInt(page), media }), {
+    headers: {
+      "Cache-Control": "max-age=0, s-maxage=86400",
+    },
+  });
 };
 
 export default function Index() {
