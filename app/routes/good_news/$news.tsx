@@ -41,7 +41,12 @@ async function getLoaderData({ id }: { id: string }) {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(await getLoaderData({ id: params.news ?? "" }));
+  return json(await getLoaderData({ id: params.news ?? "" }), {
+    headers: {
+      "Cache-Control":
+        "max-age=6, s-maxage=86400, stale-while-revalidate=604800",
+    },
+  });
 };
 
 export default function Show() {

@@ -1,16 +1,5 @@
 {
   "github": {
     "silent": true
-  },
-  "headers": [
-    {
-      "source": "/:path(honest_news|good_news|thanks|about)/*",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "max-age=60, stale-while-revalidate=604800"
-        }
-      ]
-    }
-  ]
+  }
 }
