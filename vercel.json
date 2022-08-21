@@ -4,11 +4,11 @@
   },
   "headers": [
     {
-      "source": "/:path*",
+      "source": "/(honest_news|good_news|thanks|about)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "max-age=600, s-maxage=86400, stale-while-revalidate=604800"
+          "value": "max-age=60, stale-while-revalidate=604800"
         }
       ]
     }
