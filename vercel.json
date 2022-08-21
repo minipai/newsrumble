@@ -4,7 +4,7 @@
   },
   "headers": [
     {
-      "source": "/(honest_news|good_news|thanks|about)/*",
+      "source": "/:path(honest_news|good_news|thanks|about)/*",
       "headers": [
         {
           "key": "Cache-Control",
