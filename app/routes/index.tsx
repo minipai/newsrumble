@@ -1,1 +1,1 @@
-export { default, loader } from "./honest_news/$news";
+export { default, loader, headers } from "./honest_news/$news";

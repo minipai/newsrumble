@@ -3,13 +3,19 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import ArticlePage from "~/components/ArticlePage";
 import { sql } from "~/db.server";
-import { cacheControl } from "~/modules/response";
+import { Cache_Control, cacheControl } from "~/modules/response";
 import styles from "~/styles/thanks.css";
 
 type SourceCount = {
   source: string;
   count: number;
 };
+
+export function headers() {
+  return {
+    "Cache-Control": Cache_Control,
+  };
+}
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 

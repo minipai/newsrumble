@@ -5,7 +5,7 @@ import { useLoaderData } from "@remix-run/react";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { mediaPrefix } from "~/modules/text";
-import { cacheControl } from "~/modules/response";
+import { Cache_Control, cacheControl } from "~/modules/response";
 
 type MediaCount = {
   media: string;
@@ -108,6 +108,12 @@ export const loader: LoaderFunction = async ({ request }) => {
     cacheControl()
   );
 };
+
+export function headers() {
+  return {
+    "Cache-Control": Cache_Control,
+  };
+}
 
 export default function Index() {
   const {

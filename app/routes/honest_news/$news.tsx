@@ -4,7 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
-import { cacheControl } from "~/modules/response";
+import { Cache_Control, cacheControl } from "~/modules/response";
 
 type HonestNews = {
   id: string;
@@ -92,6 +92,12 @@ export const loader: LoaderFunction = async ({ params }) => {
     cacheControl()
   );
 };
+
+export function headers() {
+  return {
+    "Cache-Control": Cache_Control,
+  };
+}
 
 export default function Show() {
   const honestNews = useLoaderData<HonestNews>();
