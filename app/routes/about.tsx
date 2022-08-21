@@ -1,4 +1,11 @@
+import { Cache_Control } from "~/modules/response";
 import ArticlePage from "~/components/ArticlePage";
+
+export function headers() {
+  return {
+    "Cache-Control": Cache_Control,
+  };
+}
 
 export default function About() {
   return (
