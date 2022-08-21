@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
+import { cacheControl } from "~/modules/response";
 
 type GoodNews = {
   id: string;
@@ -41,12 +42,7 @@ async function getLoaderData({ id }: { id: string }) {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(await getLoaderData({ id: params.news ?? "" }), {
-    headers: {
-      "Cache-Control":
-        "max-age=6, s-maxage=86400, stale-while-revalidate=604800",
-    },
-  });
+  return json(await getLoaderData({ id: params.news ?? "" }), cacheControl());
 };
 
 export default function Show() {

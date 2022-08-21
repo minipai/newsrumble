@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
+import { cacheControl } from "~/modules/response";
 
 type HonestNews = {
   id: string;
@@ -86,7 +87,10 @@ async function getLoaderData({ id }: { id: string }) {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(await getLoaderData({ id: params.news ?? "129" }));
+  return json(
+    await getLoaderData({ id: params.news ?? "129" }),
+    cacheControl()
+  );
 };
 
 export default function Show() {

@@ -4,6 +4,7 @@ import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import { truncate } from "lodash";
 import { sql } from "~/db.server";
 import { mediaPrefix } from "~/modules/text";
+import { cacheControl } from "~/modules/response";
 
 type GoodNews = {
   id: string;
@@ -54,7 +55,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return json(await getLoaderData({ page: parseInt(page), media }));
+  return json(
+    await getLoaderData({ page: parseInt(page), media }),
+    cacheControl()
+  );
 };
 
 export default function Index() {

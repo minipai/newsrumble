@@ -1,10 +1,11 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { Link, Outlet, useLocation } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { sql } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { mediaPrefix } from "~/modules/text";
+import { cacheControl } from "~/modules/response";
 
 type MediaCount = {
   media: string;
@@ -102,7 +103,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return json(await getLoaderData({ page: parseInt(page), media }));
+  return json(
+    await getLoaderData({ page: parseInt(page), media }),
+    cacheControl()
+  );
 };
 
 export default function Index() {

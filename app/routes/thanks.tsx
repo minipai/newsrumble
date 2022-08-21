@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import ArticlePage from "~/components/ArticlePage";
 import { sql } from "~/db.server";
+import { cacheControl } from "~/modules/response";
 import styles from "~/styles/thanks.css";
 
 type SourceCount = {
@@ -33,7 +34,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
-  return json<LoaderData>(await getLoaderData());
+  return json<LoaderData>(await getLoaderData(), cacheControl());
 };
 
 export default function Contact() {
