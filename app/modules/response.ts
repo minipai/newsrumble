@@ -1,5 +1,5 @@
 export const Cache_Control =
-  "max-age=3600, s-maxage=86400, stale-while-revalidate=604800";
+  "max-age=600, s-maxage=600000, stale-while-revalidate";
 
 export const cacheControl = (response: ResponseInit = {}) => {
   return {
