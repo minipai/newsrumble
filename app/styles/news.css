@@ -54,7 +54,12 @@
 .news-cards {
   gap: 2rem;
 }
-
+.news-card {
+  border-left: 5px solid #eee;
+}
+.news-card.star {
+  border-color: #d53a3a;
+}
 .news-card > a {
   display: grid;
   grid-template-columns: 5em 9fr;

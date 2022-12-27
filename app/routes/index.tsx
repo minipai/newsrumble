@@ -6,7 +6,7 @@ import { formatDate } from "~/modules/date";
 import { Cache_Control, cacheControl } from "~/modules/response";
 
 type HonestNews = {
-  id: string;
+  id: number;
   title: string;
   source: string;
   before_post_date: string;
@@ -77,11 +77,14 @@ export function headers() {
 
 export default function Index() {
   const { honestNews } = useLoaderData<LoaderData>();
-
+  const stars = [3, 10, 85, 102, 105];
   return (
     <div className="grid-5-5 news-cards">
       {honestNews.map((news) => (
-        <div key={news.id} className="news-card">
+        <div
+          key={news.id}
+          className={`news-card ${stars.includes(news.id) ? "star" : ""}`}
+        >
           <a href={`/honest_news/${news.id}`}>
             <header>{news.before_post_media}</header>
             <div>
