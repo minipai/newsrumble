@@ -33,3 +33,53 @@
 .news-after cite {
   background-color: #cdddec;
 }
+
+.news-table {
+  width: 100%;
+  font-size: 1.2rem;
+}
+.news-table a {
+  display: block;
+  padding: 0.5em;
+  border-bottom: none;
+}
+.news-table th {
+  font-weight: bold;
+  white-space: nowrap;
+}
+.news-table tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.news-cards {
+  gap: 2rem;
+}
+
+.news-card > a {
+  display: grid;
+  grid-template-columns: 5em 9fr;
+  align-items: center;
+  border: none;
+  padding: 5px 10px;
+  gap: 1rem;
+  border-radius: 4px;
+}
+.news-card > a:hover {
+  background-color: #fcfcfc;
+}
+@media (max-width: 1200px) {
+  .news-card > a {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.news-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.news-card header {
+  font-size: 1.2rem;
+  white-space: nowrap;
+}

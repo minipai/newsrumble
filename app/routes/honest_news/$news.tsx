@@ -87,10 +87,7 @@ async function getLoaderData({ id }: { id: string }) {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(
-    await getLoaderData({ id: params.news ?? "129" }),
-    cacheControl()
-  );
+  return json(await getLoaderData({ id: params.news ?? "" }), cacheControl());
 };
 
 export function headers() {

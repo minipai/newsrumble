@@ -7,10 +7,5 @@ type Props = {
 };
 
 export default function Main({ children }: Props) {
-  return (
-    <div id="main">
-      {children}
-      <hr />
-    </div>
-  );
+  return <div id="main">{children}</div>;
 }
