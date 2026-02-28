@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import { truncate } from "lodash";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { mediaPrefix } from "~/modules/text";
 import { Cache_Control, cacheControl } from "~/modules/response";
 
@@ -16,39 +16,46 @@ type MediaCount = {
   media: string;
   count: number;
 };
-async function getLoaderData({ page, media }: { page: number; media: string }) {
-  const whereMedia = (media: string) =>
-    media ? sql`WHERE posts.media = ${media}` : sql``;
-  const goodNews = await sql<GoodNews[]>`
-    SELECT
-      good_news.id,
-      good_news.title,
-      good_news.source,
-      posts.content
-    FROM good_news 
-    JOIN posts ON good_news.post_id = posts.id 
-    ${whereMedia(media)}
-    ORDER BY good_news.id DESC
-    LIMIT 10 OFFSET ${(page - 1) * 10}
-  `;
-  const [{ count }] = await sql<{ count: number }[]>`
-    SELECT count(media) from good_news 
-      JOIN (
-        SELECT id, media
-        FROM posts
-        ${whereMedia(media)}
-      ) posts 
-      ON posts.id = good_news.post_id
-  `;
-  const mediaCounts = await sql<MediaCount[]>`
-  SELECT media, count(1) 
-  FROM good_news 
-  JOIN posts on good_news.post_id = posts.id 
-  GROUP BY posts.media
-  ORDER BY count(1) DESC
-`;
 
-  return { goodNews, count, page, media, mediaCounts };
+function getLoaderData({ page, media }: { page: number; media: string }) {
+  const whereClause = media ? "WHERE posts.media = ?" : "";
+  const params: any[] = media ? [media] : [];
+
+  const goodNews = db
+    .prepare(
+      `SELECT
+        good_news.id,
+        good_news.title,
+        good_news.source,
+        posts.content
+      FROM good_news
+      JOIN posts ON good_news.post_id = posts.id
+      ${whereClause}
+      ORDER BY good_news.id DESC
+      LIMIT 10 OFFSET ?`
+    )
+    .all(...params, (page - 1) * 10) as GoodNews[];
+
+  const countResult = db
+    .prepare(
+      `SELECT count(media) as count FROM good_news
+      JOIN (
+        SELECT id, media FROM posts ${whereClause}
+      ) posts ON posts.id = good_news.post_id`
+    )
+    .get(...params) as { count: number };
+
+  const mediaCounts = db
+    .prepare(
+      `SELECT media, count(1) as count
+      FROM good_news
+      JOIN posts ON good_news.post_id = posts.id
+      GROUP BY posts.media
+      ORDER BY count(1) DESC`
+    )
+    .all() as MediaCount[];
+
+  return { goodNews, count: countResult.count, page, media, mediaCounts };
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -56,7 +63,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
   return json(
-    await getLoaderData({ page: parseInt(page), media }),
+    getLoaderData({ page: parseInt(page), media }),
     cacheControl()
   );
 };

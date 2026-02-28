@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import ArticlePage from "~/components/ArticlePage";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { Cache_Control, cacheControl } from "~/modules/response";
 import styles from "~/styles/thanks.css";
 
@@ -19,17 +19,26 @@ export function headers() {
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
-async function getLoaderData() {
-  const sourceCount = async (news: string) =>
-    await sql<SourceCount[]>`
-      SELECT source, count(source) 
-      FROM ${sql(news)}
-      WHERE source <> '' 
-      GROUP BY source 
-      ORDER BY count DESC 
-    `;
-  const honestNews = await sourceCount("honest_news");
-  const goodNews = await sourceCount("good_news");
+function getLoaderData() {
+  const honestNews = db
+    .prepare(
+      `SELECT source, count(source) as count
+      FROM honest_news
+      WHERE source <> ''
+      GROUP BY source
+      ORDER BY count DESC`
+    )
+    .all() as SourceCount[];
+
+  const goodNews = db
+    .prepare(
+      `SELECT source, count(source) as count
+      FROM good_news
+      WHERE source <> ''
+      GROUP BY source
+      ORDER BY count DESC`
+    )
+    .all() as SourceCount[];
 
   return { honestNews, goodNews };
 }
@@ -40,7 +49,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
-  return json<LoaderData>(await getLoaderData(), cacheControl());
+  return json<LoaderData>(getLoaderData(), cacheControl());
 };
 
 export default function Contact() {

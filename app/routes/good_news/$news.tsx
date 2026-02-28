@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { Cache_Control, cacheControl } from "~/modules/response";
 
@@ -20,9 +20,10 @@ type GoodNews = {
   meta: string;
 };
 
-async function getLoaderData({ id }: { id: string }) {
-  const [goodNews] = await sql<GoodNews[]>`
-      SELECT
+function getLoaderData({ id }: { id: string }) {
+  const goodNews = db
+    .prepare(
+      `SELECT
         good_news.id,
         good_news.title,
         good_news.source,
@@ -33,16 +34,17 @@ async function getLoaderData({ id }: { id: string }) {
         posts.reporter,
         posts.photographer,
         posts.meta
-      FROM good_news 
-      JOIN posts ON good_news.post_id = posts.id 
-      WHERE good_news.id = ${id}
-    `;
+      FROM good_news
+      JOIN posts ON good_news.post_id = posts.id
+      WHERE good_news.id = ?`
+    )
+    .get(id) as GoodNews;
   goodNews.formatedContent = micromark(goodNews.content);
   return goodNews;
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(await getLoaderData({ id: params.news ?? "" }), cacheControl());
+  return json(getLoaderData({ id: params.news ?? "" }), cacheControl());
 };
 
 export function headers() {

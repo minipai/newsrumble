@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { micromark } from "micromark";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { Cache_Control, cacheControl } from "~/modules/response";
 
@@ -30,9 +30,10 @@ type HonestNews = {
   formatedAfterPostContent: string;
 };
 
-async function getLoaderData({ id }: { id: string }) {
-  const [honestNews] = await sql<HonestNews[]>`
-      SELECT
+function getLoaderData({ id }: { id: string }) {
+  const honestNews = db
+    .prepare(
+      `SELECT
         honest_news.id,
         honest_news.title,
         honest_news.source,
@@ -50,14 +51,15 @@ async function getLoaderData({ id }: { id: string }) {
         after_posts.photographer as after_post_photographer,
         after_posts.meta as after_post_meta,
         after_posts.content as after_post_content,
-        honest_highlights.before as before_highlight,
-        honest_highlights.after as after_highlight
+        honest_highlights."before" as before_highlight,
+        honest_highlights."after" as after_highlight
       FROM honest_news
-        INNER JOIN posts before_posts on honest_news.before_id = before_posts.id
-        INNER JOIN posts after_posts on honest_news.after_id = after_posts.id
-        INNER JOIN honest_highlights on honest_news.id = honest_highlights.news_id
-      WHERE honest_news.id = ${id}
-    `;
+        INNER JOIN posts before_posts ON honest_news.before_id = before_posts.id
+        INNER JOIN posts after_posts ON honest_news.after_id = after_posts.id
+        INNER JOIN honest_highlights ON honest_news.id = honest_highlights.news_id
+      WHERE honest_news.id = ?`
+    )
+    .get(id) as HonestNews;
 
   honestNews.formatedBeforePostContent = micromark(
     honestNews.before_post_content
@@ -87,7 +89,7 @@ async function getLoaderData({ id }: { id: string }) {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return json(await getLoaderData({ id: params.news ?? "" }), cacheControl());
+  return json(getLoaderData({ id: params.news ?? "" }), cacheControl());
 };
 
 export function headers() {

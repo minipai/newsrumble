@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLocation } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { mediaPrefix } from "~/modules/text";
 import { Cache_Control, cacheControl } from "~/modules/response";
@@ -32,63 +32,63 @@ type HonestNews = {
   after_post_content: string;
 };
 
-async function getLoaderData({ page, media }: { page: number; media: string }) {
-  const mediaCounts = await sql<MediaCount[]>`
-    SELECT media, count(1) 
-    FROM honest_news 
-    JOIN posts on honest_news.before_id = posts.id 
-    GROUP BY posts.media
-    ORDER BY count(1) DESC
-  `;
+function getLoaderData({ page, media }: { page: number; media: string }) {
+  const mediaCounts = db
+    .prepare(
+      `SELECT media, count(1) as count
+      FROM honest_news
+      JOIN posts ON honest_news.before_id = posts.id
+      GROUP BY posts.media
+      ORDER BY count(1) DESC`
+    )
+    .all() as MediaCount[];
 
-  const whereMedia = (media: string) =>
-    media ? sql`WHERE posts.media = ${media}` : sql``;
-  const honestNews = await sql<HonestNews[]>`
-    SELECT
-      honest_news.id,
-      honest_news.title,
-      honest_news.source,
-      before_posts.date as before_post_date,
-      before_posts.title as before_post_title,
-      before_posts.media as before_post_media,
-      before_posts.reporter as before_post_reporter,
-      before_posts.photographer as before_post_photographer,
-      before_posts.meta as before_post_meta,
-      before_posts.content as before_post_content,
-      after_posts.date as after_post_date,
-      after_posts.title as after_post_title,
-      after_posts.media as after_post_media,
-      after_posts.reporter as after_post_reporter,
-      after_posts.photographer as after_post_photographer,
-      after_posts.meta as after_post_meta,
-      after_posts.content as after_post_content	
-    FROM honest_news
-    INNER JOIN (
-      select *
-      from posts
-      ${whereMedia(media)}
-    ) before_posts on honest_news.before_id = before_posts.id
-    INNER JOIN (
-      select *
-      from posts
-      ${whereMedia(media)}
-    ) after_posts on honest_news.after_id = after_posts.id
-    ORDER BY honest_news.id DESC
-    LIMIT 10 OFFSET ${(page - 1) * 10}
-  `;
+  const whereClause = media ? "WHERE posts.media = ?" : "";
+  const params: any[] = media ? [media] : [];
 
-  const [{ count }] = await sql<{ count: number }[]>`
-    SELECT count(media) 
-    FROM honest_news 
+  const honestNews = db
+    .prepare(
+      `SELECT
+        honest_news.id,
+        honest_news.title,
+        honest_news.source,
+        before_posts.date as before_post_date,
+        before_posts.title as before_post_title,
+        before_posts.media as before_post_media,
+        before_posts.reporter as before_post_reporter,
+        before_posts.photographer as before_post_photographer,
+        before_posts.meta as before_post_meta,
+        before_posts.content as before_post_content,
+        after_posts.date as after_post_date,
+        after_posts.title as after_post_title,
+        after_posts.media as after_post_media,
+        after_posts.reporter as after_post_reporter,
+        after_posts.photographer as after_post_photographer,
+        after_posts.meta as after_post_meta,
+        after_posts.content as after_post_content
+      FROM honest_news
+      INNER JOIN (
+        SELECT * FROM posts ${whereClause}
+      ) before_posts ON honest_news.before_id = before_posts.id
+      INNER JOIN (
+        SELECT * FROM posts ${whereClause}
+      ) after_posts ON honest_news.after_id = after_posts.id
+      ORDER BY honest_news.id DESC
+      LIMIT 10 OFFSET ?`
+    )
+    .all(...params, ...params, (page - 1) * 10) as HonestNews[];
+
+  const countResult = db
+    .prepare(
+      `SELECT count(media) as count
+      FROM honest_news
       JOIN (
-        select id, media
-        from posts
-        ${whereMedia(media)}
-      ) posts
-      ON posts.id = honest_news.before_id
-  `;
+        SELECT id, media FROM posts ${whereClause}
+      ) posts ON posts.id = honest_news.before_id`
+    )
+    .get(...params) as { count: number };
 
-  return { honestNews, count, media, mediaCounts, page };
+  return { honestNews, count: countResult.count, media, mediaCounts, page };
 }
 
 type LoaderData = {
@@ -104,7 +104,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
   return json(
-    await getLoaderData({ page: parseInt(page), media }),
+    getLoaderData({ page: parseInt(page), media }),
     cacheControl()
   );
 };

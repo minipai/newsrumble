@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { sql } from "~/db.server";
+import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { Cache_Control, cacheControl } from "~/modules/response";
 
@@ -25,38 +25,34 @@ type HonestNews = {
   after_post_content: string;
 };
 
-async function getLoaderData() {
-  const honestNews = await sql<HonestNews[]>`
-    SELECT
-      honest_news.id,
-      honest_news.title,
-      honest_news.source,
-      before_posts.date as before_post_date,
-      before_posts.title as before_post_title,
-      before_posts.media as before_post_media,
-      before_posts.reporter as before_post_reporter,
-      before_posts.photographer as before_post_photographer,
-      before_posts.meta as before_post_meta,
-      before_posts.content as before_post_content,
-      after_posts.date as after_post_date,
-      after_posts.title as after_post_title,
-      after_posts.media as after_post_media,
-      after_posts.reporter as after_post_reporter,
-      after_posts.photographer as after_post_photographer,
-      after_posts.meta as after_post_meta,
-      after_posts.content as after_post_content	
-    FROM honest_news
-    INNER JOIN (
-      select *
-      from posts
-    ) before_posts on honest_news.before_id = before_posts.id
-    INNER JOIN (
-      select *
-      from posts
-    ) after_posts on honest_news.after_id = after_posts.id
-    WHERE honest_news.id IN (121, 118, 117, 114, 105, 102, 99, 96, 88, 85, 78, 72, 61, 53, 47, 38, 15, 10, 8, 3)
-    ORDER BY honest_news.id DESC
-  `;
+function getLoaderData() {
+  const honestNews = db
+    .prepare(
+      `SELECT
+        honest_news.id,
+        honest_news.title,
+        honest_news.source,
+        before_posts.date as before_post_date,
+        before_posts.title as before_post_title,
+        before_posts.media as before_post_media,
+        before_posts.reporter as before_post_reporter,
+        before_posts.photographer as before_post_photographer,
+        before_posts.meta as before_post_meta,
+        before_posts.content as before_post_content,
+        after_posts.date as after_post_date,
+        after_posts.title as after_post_title,
+        after_posts.media as after_post_media,
+        after_posts.reporter as after_post_reporter,
+        after_posts.photographer as after_post_photographer,
+        after_posts.meta as after_post_meta,
+        after_posts.content as after_post_content
+      FROM honest_news
+      INNER JOIN posts before_posts ON honest_news.before_id = before_posts.id
+      INNER JOIN posts after_posts ON honest_news.after_id = after_posts.id
+      WHERE honest_news.id IN (121, 118, 117, 114, 105, 102, 99, 96, 88, 85, 78, 72, 61, 53, 47, 38, 15, 10, 8, 3)
+      ORDER BY honest_news.id DESC`
+    )
+    .all() as HonestNews[];
 
   return { honestNews };
 }
@@ -66,7 +62,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return json(await getLoaderData(), cacheControl());
+  return json(getLoaderData(), cacheControl());
 };
 
 export function headers() {
