@@ -1,10 +1,10 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Cache_Control } from "~/modules/response";
+
+
+import { useLoaderData } from "react-router";
 import { micromark } from "micromark";
 import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
-import { Cache_Control, cacheControl } from "~/modules/response";
 
 type GoodNews = {
   id: string;
@@ -43,8 +43,8 @@ function getLoaderData({ id }: { id: string }) {
   return goodNews;
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
-  return json(getLoaderData({ id: params.news ?? "" }), cacheControl());
+export const loader = async ({ params }) => {
+  return getLoaderData({ id: params.news ?? "" });
 };
 
 export function headers() {

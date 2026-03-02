@@ -1,9 +1,9 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Cache_Control } from "~/modules/response";
+
+
+import { useLoaderData } from "react-router";
 import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
-import { Cache_Control, cacheControl } from "~/modules/response";
 
 type HonestNews = {
   id: number;
@@ -61,8 +61,8 @@ type LoaderData = {
   honestNews: HonestNews[];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return json(getLoaderData(), cacheControl());
+export const loader = async ({ request }) => {
+  return getLoaderData();
 };
 
 export function headers() {

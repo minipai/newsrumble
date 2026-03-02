@@ -1,11 +1,11 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { Link, useLocation } from "@remix-run/react";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Cache_Control } from "~/modules/response";
+
+import { Link, useLocation } from "react-router";
+
+import { useLoaderData } from "react-router";
 import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { mediaPrefix } from "~/modules/text";
-import { Cache_Control, cacheControl } from "~/modules/response";
 
 type MediaCount = {
   media: string;
@@ -99,14 +99,11 @@ type LoaderData = {
   page: number;
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return json(
-    getLoaderData({ page: parseInt(page), media }),
-    cacheControl()
-  );
+  return getLoaderData({ page: parseInt(page), media });
 };
 
 export function headers() {

@@ -1,9 +1,9 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Cache_Control } from "~/modules/response";
+
+
+import { useLoaderData } from "react-router";
 import ArticlePage from "~/components/ArticlePage/ArticlePage";
 import { db } from "~/db.server";
-import { Cache_Control, cacheControl } from "~/modules/response";
 import styles from "~/styles/thanks.css?url";
 
 type SourceCount = {
@@ -48,8 +48,8 @@ type LoaderData = {
   goodNews: SourceCount[];
 };
 
-export const loader: LoaderFunction = async () => {
-  return json<LoaderData>(getLoaderData(), cacheControl());
+export const loader = async () => {
+  return getLoaderData();
 };
 
 export default function Contact() {

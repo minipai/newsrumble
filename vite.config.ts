@@ -1,9 +1,9 @@
-import { vitePlugin as remix } from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [remix()],
+  plugins: [reactRouter()],
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "app"),

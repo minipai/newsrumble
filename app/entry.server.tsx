@@ -1,9 +1,9 @@
-import type { EntryContext } from "@remix-run/node";
-import { RemixServer } from "@remix-run/react";
+import type { EntryContext } from "react-router";
+import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { PassThrough } from "node:stream";
-import { createReadableStreamFromReadable } from "@remix-run/node";
+import { createReadableStreamFromReadable } from "@react-router/node";
 
 const ABORT_DELAY = 5_000;
 
@@ -19,7 +19,7 @@ export default function handleRequest(
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+      <ServerRouter context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
       {
         [prohibitOutOfOrderStreaming ? "onAllReady" : "onShellReady"]() {
           shellRendered = true;

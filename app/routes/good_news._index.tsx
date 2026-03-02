@@ -1,10 +1,10 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData, useLocation } from "@remix-run/react";
+import { Cache_Control } from "~/modules/response";
+
+
+import { Link, useLoaderData, useLocation } from "react-router";
 import { truncate } from "lodash-es";
 import { db } from "~/db.server";
 import { mediaPrefix } from "~/modules/text";
-import { Cache_Control, cacheControl } from "~/modules/response";
 
 type GoodNews = {
   id: string;
@@ -58,14 +58,11 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
   return { goodNews, count: countResult.count, page, media, mediaCounts };
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return json(
-    getLoaderData({ page: parseInt(page), media }),
-    cacheControl()
-  );
+  return getLoaderData({ page: parseInt(page), media });
 };
 
 export function headers() {

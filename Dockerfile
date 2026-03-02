@@ -17,4 +17,4 @@ RUN mkdir -p /app/data
 ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000
-CMD ["npx", "remix-serve", "./build/server/index.js"]
+CMD ["npx", "react-router-serve", "./build/server/index.js"]

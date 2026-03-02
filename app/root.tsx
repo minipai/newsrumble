@@ -1,11 +1,11 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "react-router";
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+} from "react-router";
 
 import Header, { links as headerLinks } from "~/components/Header/Header";
 import Main, { links as mainLinks } from "~/components/Main/Main";
