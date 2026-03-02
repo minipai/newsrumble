@@ -1,11 +1,11 @@
-import resetStyle from "./reset.css";
-import baseStyle from "./base.css";
-import articleStyle from "./article.css";
-import pageStyle from "./page.css";
-import newsStyle from "./news.css";
-import layoutStyle from "./layout.css";
-import gridStyle from "./grid.css";
-import paginationStyle from "./pagination.css";
+import resetStyle from "./reset.css?url";
+import baseStyle from "./base.css?url";
+import articleStyle from "./article.css?url";
+import pageStyle from "./page.css?url";
+import newsStyle from "./news.css?url";
+import layoutStyle from "./layout.css?url";
+import gridStyle from "./grid.css?url";
+import paginationStyle from "./pagination.css?url";
 
 const styles = [
   resetStyle,

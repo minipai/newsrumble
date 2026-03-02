@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
-import { truncate } from "lodash";
+import { truncate } from "lodash-es";
 import { db } from "~/db.server";
 import { mediaPrefix } from "~/modules/text";
 import { Cache_Control, cacheControl } from "~/modules/response";

@@ -1,24 +1,22 @@
 import type { MetaFunction } from "@remix-run/node";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 
-import { Header, Main, Footer } from "~/components";
-import { links as headerLinks } from "~/components/Header";
-import { links as mainLinks } from "~/components/Main";
-import { links as footerLinks } from "~/components/Footer";
-import { links as stylesLinks } from "./styles";
+import Header, { links as headerLinks } from "~/components/Header/Header";
+import Main, { links as mainLinks } from "~/components/Main/Main";
+import Footer, { links as footerLinks } from "~/components/Footer/Footer";
+import { links as stylesLinks } from "./styles/index.js";
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "News Rumble",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = () => [
+  { charset: "utf-8" },
+  { title: "News Rumble" },
+  { name: "viewport", content: "width=device-width,initial-scale=1" },
+];
 
 export function links() {
   return [...stylesLinks(), ...headerLinks(), ...mainLinks(), ...footerLinks()];
@@ -41,7 +39,6 @@ export default function App() {
         </div>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

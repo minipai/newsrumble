@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 
-import styles from "./styles.css";
+import styles from "./styles.css?url";
 import logo from "./logo.png";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];

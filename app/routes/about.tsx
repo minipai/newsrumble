@@ -1,5 +1,5 @@
 import { Cache_Control } from "~/modules/response";
-import ArticlePage from "~/components/ArticlePage";
+import ArticlePage from "~/components/ArticlePage/ArticlePage";
 
 export function headers() {
   return {

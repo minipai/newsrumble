@@ -1,10 +1,10 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import ArticlePage from "~/components/ArticlePage";
+import ArticlePage from "~/components/ArticlePage/ArticlePage";
 import { db } from "~/db.server";
 import { Cache_Control, cacheControl } from "~/modules/response";
-import styles from "~/styles/thanks.css";
+import styles from "~/styles/thanks.css?url";
 
 type SourceCount = {
   source: string;

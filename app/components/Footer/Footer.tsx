@@ -1,4 +1,4 @@
-import styles from "./styles.css";
+import styles from "./styles.css?url";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
