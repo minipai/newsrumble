@@ -9,7 +9,6 @@ DOMAIN="newsrumble.tw"
 DATA_DIR="/opt/newsrumble-data"
 
 # Colors
-RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
@@ -29,14 +28,11 @@ echo -e "${GREEN}[3/3] Setting up container on droplet...${NC}"
 ssh "$DROPLET_USER@$DROPLET_IP" bash << EOF
 set -e
 
-# Create data directory
 mkdir -p "$DATA_DIR"
 
-# Stop and remove existing container
 docker stop "$IMAGE_NAME" 2>/dev/null || true
 docker rm "$IMAGE_NAME" 2>/dev/null || true
 
-# Run container
 docker run -d \
     --name "$IMAGE_NAME" \
     --restart unless-stopped \
