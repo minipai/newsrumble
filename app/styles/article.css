@@ -13,6 +13,9 @@
   line-height: 1.5;
   margin: 10px 0;
 }
+.article .content p {
+  margin: 1em 0;
+}
 .article cite {
   color: var(--text-light);
   margin: 5px 0;

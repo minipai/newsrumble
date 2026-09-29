@@ -2,7 +2,7 @@ import { Cache_Control } from "~/modules/response";
 
 
 import { type LoaderFunctionArgs, useLoaderData } from "react-router";
-import { micromark } from "micromark";
+import { renderNewsContent } from "~/modules/news.server";
 import { formatDate } from "~/modules/date";
 
 type GoodNews = {
@@ -40,7 +40,7 @@ async function getLoaderData(db: D1Database, { id }: { id: string }) {
     .bind(id)
     .first<GoodNews>();
   if (!goodNews) throw new Response("Not Found", { status: 404 });
-  goodNews.formatedContent = micromark(goodNews.content);
+  goodNews.formatedContent = renderNewsContent(goodNews.content);
   return goodNews;
 }
 

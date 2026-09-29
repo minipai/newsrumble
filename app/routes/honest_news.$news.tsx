@@ -2,7 +2,7 @@ import { Cache_Control } from "~/modules/response";
 
 
 import { type LoaderFunctionArgs, useLoaderData } from "react-router";
-import { micromark } from "micromark";
+import { renderNewsContent } from "~/modules/news.server";
 import { formatDate } from "~/modules/date";
 
 type HonestNews = {
@@ -62,7 +62,7 @@ async function getLoaderData(db: D1Database, { id }: { id: string }) {
     .first<HonestNews>();
   if (!honestNews) throw new Response("Not Found", { status: 404 });
 
-  honestNews.formatedBeforePostContent = micromark(
+  honestNews.formatedBeforePostContent = renderNewsContent(
     honestNews.before_post_content
   ).replaceAll(
     new RegExp(
@@ -74,7 +74,7 @@ async function getLoaderData(db: D1Database, { id }: { id: string }) {
     ),
     (text) => (text ? `<strong>${text}</strong>` : text)
   );
-  honestNews.formatedAfterPostContent = micromark(
+  honestNews.formatedAfterPostContent = renderNewsContent(
     honestNews.after_post_content
   ).replaceAll(
     new RegExp(
