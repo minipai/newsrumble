@@ -1,8 +1,7 @@
 import { Cache_Control } from "~/modules/response";
 
 
-import { useLoaderData } from "react-router";
-import { db } from "~/db.server";
+import { type LoaderFunctionArgs, useLoaderData } from "react-router";
 import { formatDate } from "~/modules/date";
 
 type HonestNews = {
@@ -25,8 +24,8 @@ type HonestNews = {
   after_post_content: string;
 };
 
-function getLoaderData() {
-  const honestNews = db
+async function getLoaderData(db: D1Database) {
+  const { results: honestNews } = await db
     .prepare(
       `SELECT
         honest_news.id,
@@ -52,7 +51,7 @@ function getLoaderData() {
       WHERE honest_news.id IN (121, 118, 117, 114, 105, 102, 99, 96, 88, 85, 78, 72, 61, 53, 47, 38, 15, 10, 8, 3)
       ORDER BY honest_news.id DESC`
     )
-    .all() as HonestNews[];
+    .all<HonestNews>();
 
   return { honestNews };
 }
@@ -61,8 +60,8 @@ type LoaderData = {
   honestNews: HonestNews[];
 };
 
-export const loader = async ({ request }) => {
-  return getLoaderData();
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  return getLoaderData(context.cloudflare.env.DB);
 };
 
 export function headers() {

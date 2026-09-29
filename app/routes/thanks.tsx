@@ -1,9 +1,8 @@
 import { Cache_Control } from "~/modules/response";
 
 
-import { useLoaderData } from "react-router";
+import { type LoaderFunctionArgs, useLoaderData } from "react-router";
 import ArticlePage from "~/components/ArticlePage/ArticlePage";
-import { db } from "~/db.server";
 import styles from "~/styles/thanks.css?url";
 
 type SourceCount = {
@@ -19,8 +18,8 @@ export function headers() {
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
-function getLoaderData() {
-  const honestNews = db
+async function getLoaderData(db: D1Database) {
+  const { results: honestNews } = await db
     .prepare(
       `SELECT source, count(source) as count
       FROM honest_news
@@ -28,9 +27,9 @@ function getLoaderData() {
       GROUP BY source
       ORDER BY count DESC`
     )
-    .all() as SourceCount[];
+    .all<SourceCount>();
 
-  const goodNews = db
+  const { results: goodNews } = await db
     .prepare(
       `SELECT source, count(source) as count
       FROM good_news
@@ -38,7 +37,7 @@ function getLoaderData() {
       GROUP BY source
       ORDER BY count DESC`
     )
-    .all() as SourceCount[];
+    .all<SourceCount>();
 
   return { honestNews, goodNews };
 }
@@ -48,8 +47,8 @@ type LoaderData = {
   goodNews: SourceCount[];
 };
 
-export const loader = async () => {
-  return getLoaderData();
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  return getLoaderData(context.cloudflare.env.DB);
 };
 
 export default function Contact() {

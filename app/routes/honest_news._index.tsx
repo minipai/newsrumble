@@ -1,9 +1,8 @@
 import { Cache_Control } from "~/modules/response";
 
-import { Link, useLocation } from "react-router";
+import { type LoaderFunctionArgs, Link, useLocation } from "react-router";
 
 import { useLoaderData } from "react-router";
-import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 import { mediaPrefix } from "~/modules/text";
 
@@ -32,8 +31,8 @@ type HonestNews = {
   after_post_content: string;
 };
 
-function getLoaderData({ page, media }: { page: number; media: string }) {
-  const mediaCounts = db
+async function getLoaderData(db: D1Database, { page, media }: { page: number; media: string }) {
+  const { results: mediaCounts } = await db
     .prepare(
       `SELECT media, count(1) as count
       FROM honest_news
@@ -41,12 +40,12 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
       GROUP BY posts.media
       ORDER BY count(1) DESC`
     )
-    .all() as MediaCount[];
+    .all<MediaCount>();
 
   const whereClause = media ? "WHERE posts.media = ?" : "";
   const params: any[] = media ? [media] : [];
 
-  const honestNews = db
+  const { results: honestNews } = await db
     .prepare(
       `SELECT
         honest_news.id,
@@ -76,9 +75,10 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
       ORDER BY honest_news.id DESC
       LIMIT 10 OFFSET ?`
     )
-    .all(...params, ...params, (page - 1) * 10) as HonestNews[];
+    .bind(...params, ...params, (page - 1) * 10)
+    .all<HonestNews>();
 
-  const countResult = db
+  const countResult = await db
     .prepare(
       `SELECT count(media) as count
       FROM honest_news
@@ -86,9 +86,10 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
         SELECT id, media FROM posts ${whereClause}
       ) posts ON posts.id = honest_news.before_id`
     )
-    .get(...params) as { count: number };
+    .bind(...params)
+    .first<{ count: number }>();
 
-  return { honestNews, count: countResult.count, media, mediaCounts, page };
+  return { honestNews, count: countResult!.count, media, mediaCounts, page };
 }
 
 type LoaderData = {
@@ -99,11 +100,11 @@ type LoaderData = {
   page: number;
 };
 
-export const loader = async ({ request }) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return getLoaderData({ page: parseInt(page), media });
+  return getLoaderData(context.cloudflare.env.DB, { page: parseInt(page), media });
 };
 
 export function headers() {

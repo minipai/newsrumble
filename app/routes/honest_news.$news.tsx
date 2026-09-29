@@ -1,9 +1,8 @@
 import { Cache_Control } from "~/modules/response";
 
 
-import { useLoaderData } from "react-router";
+import { type LoaderFunctionArgs, useLoaderData } from "react-router";
 import { micromark } from "micromark";
-import { db } from "~/db.server";
 import { formatDate } from "~/modules/date";
 
 type HonestNews = {
@@ -30,8 +29,8 @@ type HonestNews = {
   formatedAfterPostContent: string;
 };
 
-function getLoaderData({ id }: { id: string }) {
-  const honestNews = db
+async function getLoaderData(db: D1Database, { id }: { id: string }) {
+  const honestNews = await db
     .prepare(
       `SELECT
         honest_news.id,
@@ -59,7 +58,9 @@ function getLoaderData({ id }: { id: string }) {
         INNER JOIN honest_highlights ON honest_news.id = honest_highlights.news_id
       WHERE honest_news.id = ?`
     )
-    .get(id) as HonestNews;
+    .bind(id)
+    .first<HonestNews>();
+  if (!honestNews) throw new Response("Not Found", { status: 404 });
 
   honestNews.formatedBeforePostContent = micromark(
     honestNews.before_post_content
@@ -88,8 +89,8 @@ function getLoaderData({ id }: { id: string }) {
   return honestNews;
 }
 
-export const loader = async ({ params }) => {
-  return getLoaderData({ id: params.news ?? "" });
+export const loader = async ({ params, context }: LoaderFunctionArgs) => {
+  return getLoaderData(context.cloudflare.env.DB, { id: params.news ?? "" });
 };
 
 export function headers() {

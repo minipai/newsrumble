@@ -1,9 +1,8 @@
 import { Cache_Control } from "~/modules/response";
 
 
-import { Link, useLoaderData, useLocation } from "react-router";
+import { type LoaderFunctionArgs, Link, useLoaderData, useLocation } from "react-router";
 import { truncate } from "lodash-es";
-import { db } from "~/db.server";
 import { mediaPrefix } from "~/modules/text";
 
 type GoodNews = {
@@ -17,11 +16,11 @@ type MediaCount = {
   count: number;
 };
 
-function getLoaderData({ page, media }: { page: number; media: string }) {
+async function getLoaderData(db: D1Database, { page, media }: { page: number; media: string }) {
   const whereClause = media ? "WHERE posts.media = ?" : "";
   const params: any[] = media ? [media] : [];
 
-  const goodNews = db
+  const { results: goodNews } = await db
     .prepare(
       `SELECT
         good_news.id,
@@ -34,18 +33,20 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
       ORDER BY good_news.id DESC
       LIMIT 10 OFFSET ?`
     )
-    .all(...params, (page - 1) * 10) as GoodNews[];
+    .bind(...params, (page - 1) * 10)
+    .all<GoodNews>();
 
-  const countResult = db
+  const countResult = await db
     .prepare(
       `SELECT count(media) as count FROM good_news
       JOIN (
         SELECT id, media FROM posts ${whereClause}
       ) posts ON posts.id = good_news.post_id`
     )
-    .get(...params) as { count: number };
+    .bind(...params)
+    .first<{ count: number }>();
 
-  const mediaCounts = db
+  const { results: mediaCounts } = await db
     .prepare(
       `SELECT media, count(1) as count
       FROM good_news
@@ -53,16 +54,16 @@ function getLoaderData({ page, media }: { page: number; media: string }) {
       GROUP BY posts.media
       ORDER BY count(1) DESC`
     )
-    .all() as MediaCount[];
+    .all<MediaCount>();
 
-  return { goodNews, count: countResult.count, page, media, mediaCounts };
+  return { goodNews, count: countResult!.count, page, media, mediaCounts };
 }
 
-export const loader = async ({ request }) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") ?? "1";
   const media = url.searchParams.get("media") ?? "";
-  return getLoaderData({ page: parseInt(page), media });
+  return getLoaderData(context.cloudflare.env.DB, { page: parseInt(page), media });
 };
 
 export function headers() {

@@ -8,8 +8,9 @@ node_modules
 .DS_Store
 
 /build/
+/dist/
 /public/build
 /api/
 /data/
-
-
+.wrangler/
+.dev.vars

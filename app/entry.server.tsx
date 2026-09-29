@@ -1,54 +1,34 @@
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
-import { renderToPipeableStream } from "react-dom/server";
-import { PassThrough } from "node:stream";
-import { createReadableStreamFromReadable } from "@react-router/node";
+import { renderToReadableStream } from "react-dom/server";
 
-const ABORT_DELAY = 5_000;
-
-export default function handleRequest(
+export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  routerContext: EntryContext
 ) {
-  const prohibitOutOfOrderStreaming =
-    isbot(request.headers.get("user-agent")) || false;
+  let shellRendered = false;
+  const body = await renderToReadableStream(
+    <ServerRouter context={routerContext} url={request.url} />,
+    {
+      signal: request.signal,
+      onError(error: unknown) {
+        responseStatusCode = 500;
+        if (shellRendered) console.error(error);
+      },
+    }
+  );
+  shellRendered = true;
 
-  return new Promise((resolve, reject) => {
-    let shellRendered = false;
-    const { pipe, abort } = renderToPipeableStream(
-      <ServerRouter context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
-      {
-        [prohibitOutOfOrderStreaming ? "onAllReady" : "onShellReady"]() {
-          shellRendered = true;
-          const body = new PassThrough();
-          const stream = createReadableStreamFromReadable(body);
+  if (isbot(request.headers.get("user-agent") || "")) {
+    await body.allReady;
+  }
 
-          responseHeaders.set("Content-Type", "text/html");
-
-          resolve(
-            new Response(stream, {
-              headers: responseHeaders,
-              status: responseStatusCode,
-            })
-          );
-
-          pipe(body);
-        },
-        onShellError(error: unknown) {
-          reject(error);
-        },
-        onError(error: unknown) {
-          responseStatusCode = 500;
-          if (shellRendered) {
-            console.error(error);
-          }
-        },
-      }
-    );
-
-    setTimeout(abort, ABORT_DELAY);
+  responseHeaders.set("Content-Type", "text/html");
+  return new Response(body, {
+    headers: responseHeaders,
+    status: responseStatusCode,
   });
 }

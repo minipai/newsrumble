@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "newsrumble",
+  "main": "workers/app.ts",
+  "account_id": "ce0ddb19b5995b9d11f2c276ac5afd6c",
+  "compatibility_date": "2026-09-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "newsrumble.tw", "custom_domain": true }
+  ],
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "newsrumble",
+      "database_id": "c11bc264-c3c2-4bdc-9de8-7bd1b904550e"
+    }
+  ]
+}
